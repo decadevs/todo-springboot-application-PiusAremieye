@@ -2,12 +2,15 @@ package com.example.todoapp.models;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Table;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.Date;
+
 
 @Entity
 @Table(appliesTo = "task")
@@ -27,16 +30,18 @@ public class Task {
     @CreationTimestamp
     @Column(nullable = false)
     private Timestamp createdAt;
-    private Timestamp updateAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private Timestamp updatedAt;
     private Timestamp completedAt;
 
-    public Task(Integer id, @NotNull @NotBlank @Length(max = 150) String title, String description, String status, Timestamp createdAt, Timestamp updateAt, Timestamp completedAt) {
-        this.id = id;
+    public Task(String title, String description, String status, Timestamp createdAt, Timestamp updateAt, Timestamp completedAt) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.createdAt = createdAt;
-        this.updateAt = updateAt;
+        this.updatedAt = updateAt;
         this.completedAt = completedAt;
     }
 
@@ -75,7 +80,7 @@ public class Task {
         this.status = status;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
@@ -83,15 +88,15 @@ public class Task {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdateAt() {
-        return updateAt;
+    public Date getUpdateAt() {
+        return updatedAt;
     }
 
     public void setUpdateAt(Timestamp updateAt) {
-        this.updateAt = updateAt;
+        this.updatedAt = updateAt;
     }
 
-    public Timestamp getCompletedAt() {
+    public Date getCompletedAt() {
         return completedAt;
     }
 

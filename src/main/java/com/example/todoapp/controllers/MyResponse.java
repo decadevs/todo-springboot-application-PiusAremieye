@@ -1,21 +1,24 @@
 package com.example.todoapp.controllers;
 
+import com.example.todoapp.models.Task;
+import org.springframework.http.HttpStatus;
+
 public class MyResponse<T>{
-    private String status;
+    private HttpStatus status;
     private String message;
     private T data;
 
-    public MyResponse(String status, String message, T data) {
+    public MyResponse(HttpStatus status, String message, T data) {
         this.status = status;
         this.message = message;
         this.data = data;
     }
 
-    public String getStatus() {
+    public HttpStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(HttpStatus status) {
         this.status = status;
     }
 
