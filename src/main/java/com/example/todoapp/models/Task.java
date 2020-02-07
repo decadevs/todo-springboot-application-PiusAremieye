@@ -34,18 +34,17 @@ public class Task {
     @UpdateTimestamp
     @Column(nullable = false)
     private Timestamp updatedAt;
+
+
     private Timestamp completedAt;
 
-    public Task(String title, String description, String status, Timestamp createdAt, Timestamp updateAt, Timestamp completedAt) {
+    public Task() {
+    }
+
+    public Task(String title, String description, String status) {
         this.title = title;
         this.description = description;
         this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updateAt;
-        this.completedAt = completedAt;
-    }
-
-    public Task() {
     }
 
     public Integer getId() {
@@ -80,7 +79,7 @@ public class Task {
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
@@ -88,7 +87,7 @@ public class Task {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdateAt() {
+    public Timestamp getUpdateAt() {
         return updatedAt;
     }
 
@@ -96,7 +95,7 @@ public class Task {
         this.updatedAt = updateAt;
     }
 
-    public Date getCompletedAt() {
+    public Timestamp getCompletedAt() {
         return completedAt;
     }
 

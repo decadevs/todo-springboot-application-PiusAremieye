@@ -54,7 +54,7 @@ public class TasksController{
         String message = "All Todo's retrieved successfully";
         if (todos.isEmpty()){
             status = HttpStatus.BAD_REQUEST;
-            message = "Todo's does not exist";
+            message = "No task available";
         }
         response.setStatus(status.value());
         return new MyResponse<>(status, message, todos);

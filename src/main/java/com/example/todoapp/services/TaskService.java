@@ -5,6 +5,7 @@ import com.example.todoapp.repository.TaskRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -43,17 +44,24 @@ public class TaskService {
         return t;
     }
 
-
     public Task updateTask(Task taskToUpdate, Integer id){
         Task todo = taskRespository.findById(id).orElse(null);
         if (todo != null){
             todo.setTitle(taskToUpdate.getTitle());
             todo.setDescription(taskToUpdate.getDescription());
+            Timestamp time = todo.getUpdateAt();
+            String status = taskToUpdate.getStatus();
+            if (status.equalsIgnoreCase("completed")){
+                todo.setStatus("completed");
+                todo.setCompletedAt(time);
+            }
+            else{
+                todo.setStatus(status);
+                todo.setCompletedAt(null);
+            }
             return taskRespository.save(todo);
         }
-        else{
-            return taskToUpdate;
-        }
+        return null;
     }
 
     public Integer deleteTask(Integer id){
