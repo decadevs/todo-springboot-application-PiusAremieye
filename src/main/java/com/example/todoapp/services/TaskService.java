@@ -6,28 +6,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class TaskService {
 
-    @Autowired
     private TaskRespository taskRespository;
 
-    public Task createTask(Task task){
-        Task t = null;
+    @Autowired
+    public TaskService(TaskRespository taskRespository){
+        this.taskRespository = taskRespository;
+    }
+
+    public Task createAndEditTask(Task task){
+        Task todo = taskRespository.save(task);
         try{
-            t = taskRespository.save(task);
+            todo.setTitle(task.getTitle());
+            todo.setDescription(task.getDescription());
+
+            Date time = new Date();
+            long newTime = time.getTime();
+            Timestamp completedTime = new Timestamp(newTime);
+            String status = task.getStatus();
+            if (status.equalsIgnoreCase("completed")){
+                todo.setStatus(status);
+                todo.setCompletedAt(completedTime);
+            }
+            else{
+                todo.setStatus(status);
+                todo.setCompletedAt(null);
+            }
+            taskRespository.save(todo);
         }catch (Exception e){
             System.err.println(e.getMessage());
         }
-        return t;
+        return todo;
     }
 
     public Task viewTask(Integer id){
         Task t = null;
         try{
-            t = taskRespository.findById(id).orElse(null);
+            t = findTask(id);
         }catch (Exception e){
             System.err.println(e.getMessage());
         }
@@ -44,35 +64,23 @@ public class TaskService {
         return t;
     }
 
-    public Task updateTask(Task taskToUpdate, Integer id){
+    public Task findTask(Integer id){
         Task todo = taskRespository.findById(id).orElse(null);
         if (todo != null){
-            todo.setTitle(taskToUpdate.getTitle());
-            todo.setDescription(taskToUpdate.getDescription());
-            Timestamp time = todo.getUpdateAt();
-            String status = taskToUpdate.getStatus();
-            if (status.equalsIgnoreCase("completed")){
-                todo.setStatus("completed");
-                todo.setCompletedAt(time);
-            }
-            else{
-                todo.setStatus(status);
-                todo.setCompletedAt(null);
-            }
             return taskRespository.save(todo);
         }
         return null;
     }
 
-    public Integer deleteTask(Integer id){
+    public String deleteTask(Integer id){
         if (taskRespository.existsById(id)){
             taskRespository.deleteById(id);
-            return id;
+            return "Todo deleted successfully";
         }
         return null;
     }
 
-    public List<Task> ViewByStatus(String status){
+    public List<Task> viewByStatus(String status){
         return taskRespository.findByStatus(status);
     }
 }

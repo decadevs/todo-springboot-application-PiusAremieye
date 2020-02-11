@@ -3,103 +3,64 @@ package com.example.todoapp.controllers;
 import com.example.todoapp.models.Task;
 import com.example.todoapp.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-
-@RestController
-@RequestMapping("/todo")
+@Controller
 public class TasksController{
 
-    @Autowired
     private TaskService taskService;
 
-    @PostMapping
-    public MyResponse<Task> creatTask(@RequestBody Task task, HttpServletResponse response){
-        Task todo = taskService.createTask(task);
-        HttpStatus status = HttpStatus.CREATED;
-        String message = "Todo created successfully";
-        if (todo == null){
-            status = HttpStatus.BAD_REQUEST;
-            message = "Todo cannot be created";
-        }
-        response.setStatus(status.value());
-        return new MyResponse<>(status, message, todo);
+    @Autowired
+    public TasksController(TaskService taskService){
+      this.taskService = taskService;
     }
 
-    @GetMapping
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public MyResponse<Task> viewOneTask(@PathVariable Integer id, HttpServletResponse response){
-        Task todo = taskService.viewTask(id);
-        HttpStatus status = HttpStatus.CREATED;
-        String message = "Todo retrieved successfully";
-        if (todo == null){
-            status = HttpStatus.BAD_REQUEST;
-            message = "Todo does not exist";
-        }
-        response.setStatus(status.value());
-        return new MyResponse<>(status, message, todo);
+    @RequestMapping(path = "/")
+    public String index(){
+        return "index";
     }
 
-
-    @GetMapping
-    @RequestMapping(value = "/all_todo", method = RequestMethod.GET)
-    public MyResponse<List<Task>> viewAllTask(HttpServletResponse response){
-        List<Task> todos = taskService.viewAllTask();
-        HttpStatus status = HttpStatus.CREATED;
-        String message = "All Todo's retrieved successfully";
-        if (todos.isEmpty()){
-            status = HttpStatus.BAD_REQUEST;
-            message = "No task available";
-        }
-        response.setStatus(status.value());
-        return new MyResponse<>(status, message, todos);
+    @RequestMapping(path = "/todos/add", method = RequestMethod.GET)
+    public String createTodo(Model model){
+        model.addAttribute("newTodo", new Task());
+        return "add";
     }
 
-    @GetMapping
-    @RequestMapping(value = "/status/{status}", method = RequestMethod.GET)
-    public MyResponse<List<Task>> viewStatus(@PathVariable String status, HttpServletResponse response){
-        List<Task> todos = taskService.ViewByStatus(status);
-        HttpStatus statusCode = HttpStatus.CREATED;
-        String message = "All " + status + " Todo's retrieved successfully";
-        if (todos.isEmpty()){
-            statusCode = HttpStatus.BAD_REQUEST;
-            message = status + " Todo's does not exist";
-        }
-        response.setStatus(statusCode.value());
-        return new MyResponse<>(statusCode, message, todos);
+    @RequestMapping(path = "/todos", method = RequestMethod.POST)
+    public String saveTodo(Task task){
+        taskService.createAndEditTask(task);
+        return "redirect:/todos";
     }
 
-    @PatchMapping
-    @RequestMapping(value = "{id}", method = RequestMethod.PATCH)
-    public MyResponse<Task> updateTask(@RequestBody Task taskToUpdate, @PathVariable Integer id,  HttpServletResponse response){
-        Task todo = taskService.updateTask(taskToUpdate, id);
-        HttpStatus status = HttpStatus.CREATED;
-        String message = "Todo updated successfully";
-        if (todo == null){
-            status = HttpStatus.BAD_REQUEST;
-            message = "Todo does not exist";
-        }
-        response.setStatus(status.value());
-        return new MyResponse<>(status, message, todo);
+    @RequestMapping(path = "/todo/{id}", method = RequestMethod.GET)
+    public String viewTodo(Model model, @PathVariable Integer id){
+        model.addAttribute("todoById", taskService.viewTask(id));
+        return "todo";
     }
 
-    @DeleteMapping
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public MyResponse<Integer> deleteTask(@PathVariable Integer id, HttpServletResponse response){
-        Integer todo = taskService.deleteTask(id);
-        HttpStatus status = HttpStatus.CREATED;
-        String message = "Todo deleted successfully";
-        if (todo == null){
-            status = HttpStatus.BAD_REQUEST;
-            message = "Todo does not exist or was deleted";
-        }
-        response.setStatus(status.value());
-        return new MyResponse<>(status, message, todo);
+    @RequestMapping(path = "/todos/status", method = RequestMethod.GET)
+    public String viewTodoByStatus(Model model, @RequestParam(value = "search", required = false) String status){
+        model.addAttribute("todos", taskService.viewByStatus(status));
+        return "todos";
     }
 
+    @RequestMapping(path = "/todos", method = RequestMethod.GET)
+    public String viewAllTodo(Model model){
+        model.addAttribute("todos", taskService.viewAllTask());
+        return "todos";
+    }
+
+    @RequestMapping(path = "/todo/edit/{id}", method = RequestMethod.GET)
+    public String editTodo(Model model, @PathVariable Integer id){
+       model.addAttribute("editTodo", taskService.findTask(id));
+       return "edit";
+    }
+
+    @RequestMapping(path = "/todo/delete/{id}", method = RequestMethod.GET)
+    public String deleteTodo(@PathVariable Integer id){
+        taskService.deleteTask(id);
+        return "redirect:/todos";
+    }
 }

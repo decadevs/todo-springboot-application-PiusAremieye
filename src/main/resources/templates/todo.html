@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Todo</title>
+    <th:block th:include="layouts/header" />
+</head>
+<body>
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="card-title">
+                <h2>Todo details</h2>
+            </div>
+            <hr>
+            <div>
+                <h3>Title : <span th:text="${todoById.title}"></span></h3>
+                <h3>Description : <span th:text="${todoById.description}"></span></h3>
+                <h3>Status : <span th:text="${todoById.status}"></span></h3>
+                <h3>Created At : <span th:text="${todoById.createdAt}"></span></h3>
+                <h3>Update At : <span th:text="${todoById.updateAt}"></span></h3>
+                <h3>Completed At : <span th:text="${todoById.completedAt}"></span></h3>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-outline-danger" th:href="@{/todos}">Back</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

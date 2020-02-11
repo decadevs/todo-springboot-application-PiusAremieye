@@ -1,5 +1,6 @@
 package com.example.todoapp.models;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Table;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,9 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Date;
 
-
 @Entity
-@Table(appliesTo = "task")
 public class Task {
 
     @Id
@@ -25,7 +24,8 @@ public class Task {
     @Length(max = 150)
     private String title;
     private String description;
-    private String status;
+
+    private String status = "pending";
 
     @CreationTimestamp
     @Column(nullable = false)
@@ -35,16 +35,14 @@ public class Task {
     @Column(nullable = false)
     private Timestamp updatedAt;
 
-
     private Timestamp completedAt;
 
     public Task() {
     }
 
-    public Task(String title, String description, String status) {
+    public Task(String title, String description) {
         this.title = title;
         this.description = description;
-        this.status = status;
     }
 
     public Integer getId() {
@@ -102,6 +100,7 @@ public class Task {
     public void setCompletedAt(Timestamp completedAt) {
         this.completedAt = completedAt;
     }
+
 }
 
 
