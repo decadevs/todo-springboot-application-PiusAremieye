@@ -1,9 +1,9 @@
-package com.example.todoapp.controllers;
+package com.example.todoapp.response;
 
 import com.example.todoapp.models.Task;
 import org.springframework.http.HttpStatus;
 
-public class MyResponse<T>{
+public class MyResponse<T> {
     private HttpStatus status;
     private String message;
     private T data;

@@ -9,12 +9,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@AutoConfigureMockMvc
 @SpringBootTest
 public class TaskTest {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Autowired
     private TasksController tasksController;

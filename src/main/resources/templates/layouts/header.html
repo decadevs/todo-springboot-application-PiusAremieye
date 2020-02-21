@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" http-equiv="Content-Type" content="text/html" />
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" rel="stylesheet" media="screen" />
-        <link th:href = "@{/static/css/style.css}" href="../../static/css/style.css" rel="stylesheet" />
+        <link href="../../static/css/style.css" rel="stylesheet" />
     </head>
     <body>
         <div class="container mt-5">
@@ -14,23 +14,32 @@
                         <li class="nav-item ml-3"><a th:href="@{/todos}">Todo</a></li>
                         <li class="nav-item ml-3"><a th:href="@{/todos/add}">Add Todo</a></li>
                     </ul>
-                    <div>
-                        <form class="form-inline" th:action="@{/todos/status}" th:object="${search}">
-                            <div class="form-group">
-                                <div class="col-sm-10">
-                                    <select name="search" class="form-control" required>
-                                        <option disabled>Select todo by status</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="in-progress">In-Progress</option>
-                                        <option value="completed">Completed</option>
-                                    </select>
+                    <ul class="nav">
+                        <li>
+                            <form class="form-inline" th:action="@{/todos/status}" th:object="${search}">
+                                <div class="form-group">
+                                    <div class="col-sm-10">
+                                        <select name="search" class="form-control" required>
+                                            <option disabled>Select todo by status</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="in-progress">In-Progress</option>
+                                            <option value="completed">Completed</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-outline-success">Search</button>
-                            </div>
-                        </form>
-                    </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-outline-success">Search</button>
+                                </div>
+                            </form>
+                        </li>
+                        <li class="nav-item ml-3"><a th:href="@{/login}" class="btn btn-outline-primary">Login</a></li>
+                        <li class="nav-item ml-3"><a th:href="@{/signup}" class="btn btn-outline-primary">Sign Up</a></li>
+                        <li class="nav-item ml-3">
+                            <form class="form-inline" th:action="@{/logout}" method="post">
+                                <input type="submit" class="btn btn-outline-primary" value="Logout" />
+                            </form>
+                        </li>
+                    </ul>
                 </nav>
             </div>
         </div>
