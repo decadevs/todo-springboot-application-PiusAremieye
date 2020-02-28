@@ -8,6 +8,7 @@
         <version>2.2.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+    <packaging>jar</packaging>
     <groupId>com.example</groupId>
     <artifactId>todoapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -40,7 +41,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -68,7 +73,6 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <version>2.2.4.RELEASE</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
@@ -84,6 +88,7 @@
     </dependencies>
 
     <build>
+        <finalName>Todo-Application</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
